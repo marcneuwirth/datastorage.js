@@ -34,4 +34,4 @@ var dataStorage = (function(cache) {
 			}
 		}
 	};
-})('+1 h');
+})('+1');
