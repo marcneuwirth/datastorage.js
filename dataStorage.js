@@ -1,8 +1,8 @@
 var dataStorage = (function(cache, async) {
-    var _ds = {
+	var _ds = {
 		data: {},
 		dataQueue: [],
-		cache: cache || false, //'+1'
+		cache: cache || false, //Time in seconds, ie 1 hour = 3600
 		async: async || true,
 		init: function(){
 			if(_ds.async){
@@ -29,11 +29,9 @@ var dataStorage = (function(cache, async) {
 			return undefined;
 		},
 		putData: function(key, value) {
-			_ds.data[key] = value;
 			
 			if(_ds.cache){
-				value.timestamp = new Date().setHours(_ds.cache).toString();
-				console.log(cache, value.timestamp);
+				value.timestamp = Math.round(new Date().getTime() / 1000.0) + _ds.cache;
 			}
 
 			if(_ds.async){
@@ -45,6 +43,8 @@ var dataStorage = (function(cache, async) {
 			else {
 				_ds._save(key,value);
 			}
+
+			_ds.data[key] = value;
 		},
 		removeData: function(key) {
 			delete _ds.data[key];
@@ -60,4 +60,4 @@ var dataStorage = (function(cache, async) {
 		removeData: _ds.removeData
 	};
 
-})('+1',true);
+})(3600);
